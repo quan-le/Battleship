@@ -1,17 +1,12 @@
 package com.hcmiu.tsweeper;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 public class HelloController {
 
@@ -34,16 +29,7 @@ public class HelloController {
     private ComboBox<?> cb_BOX_botSelection;
 
     @FXML
-    private AnchorPane main_AnchorPane;
-
-    @FXML
-    private Label welcomeText;
-
-    @FXML
-    void onHelloButtonClick(ActionEvent event)
-    {
-
-    }
+    private StackPane stkPane_Main;
 
     @FXML
     void initialize() {
