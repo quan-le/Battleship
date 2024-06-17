@@ -86,6 +86,7 @@ public class MainController implements EventHandler<MouseEvent>
         minefield.addMines();
 
         addMinefieldButtons();
+        minefield.printMinefield();
         timer = new Timer();
         started = false;
         setTextFieldsandLabels();
@@ -158,6 +159,7 @@ public class MainController implements EventHandler<MouseEvent>
                 button.setStyle("-fx-background-insets: 0,1,2");
                 //Adding minefield button into pane
                 pane_Main.getChildren().add(button);
+                minefield.addButtonToCell(x,y,button);
 
                 int finalX = x;
                 int finalY = y;

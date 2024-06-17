@@ -1,4 +1,5 @@
 package com.hcmiu.tsweeper;
+import javafx.scene.control.*;
 
 public class Minefield {
 
@@ -26,7 +27,7 @@ public class Minefield {
         numMinesLeft = 10;
         numMinesatStart = 10;
         cellsUncovered =0;
-        Cell[][] minefield = new Cell[10][10];                                     // DSA Array 2d
+        Cell[][] minefield = new Cell[10][10];              // DSA Array 2d
         exploded = false;
     }
 
@@ -46,10 +47,21 @@ public class Minefield {
                 minefield[i][j].x = i;                              // x index in Cell[][] minefield
                 minefield[i][j].y = j;                              // y index in Cell[][] minefield
                 totalCells++;                                       // number of cell++
+                System.out.println("Cell X = "+ minefield[i][j].x +": Y = "+ minefield[i][j].y
+                        +": Mined = "+ minefield[i][j].mined +": flagged : "+ minefield[i][j].flagged);
             }
         }
     }
 
+    public void printMinefield()
+    {
+        for (int i = 0; i < minefieldWidth; i++) {
+            for (int j = 0; j < minefieldHeight; j++) {
+                System.out.println("Cell X = " + minefield[i][j].x + ": Y = " + minefield[i][j].y
+                        + ": Mined = " + minefield[i][j].mined + ": flagged : " + minefield[i][j].flagged);
+            }
+        }
+    }
 
 
     //Check if cell is exposed/clicked or not
@@ -133,9 +145,9 @@ public class Minefield {
             newYH = y+1;                                                // YH = Above cell
         }
         // Sumup, we have x,y, left x, right x, down y, up y to get the index of all 8 cells surrounding the chosen cell
-        for (int i=newXL; i <= newXH ; i++   )                          //transverse from x left -> x -> x right
+        for (int i=newXL; i < newXH ; i++   )                          //transverse from x left -> x -> x right
         {
-            for ( int j=newYL ; j<= newYH ; j++)                        //transverse from y low -> y -> y up
+            for ( int j=newYL ; j< newYH ; j++)                        //transverse from y low -> y -> y up
             {
                 if ((i == x) && (j == y)){ continue; }                  // skip self
                 if (minefield[i][j].mined == true){ countToShow++; }    // add to # mines nearby
@@ -172,7 +184,11 @@ public class Minefield {
 
     public int getNumMinesLeft()
     { return numMinesLeft; }                                        // total cells at start = difficulty level
-
+    //add button into minefield
+    public void addButtonToCell(int x, int y, Button bt)
+    {
+        minefield[x][y].button = bt;
+    }
 }
 
 
