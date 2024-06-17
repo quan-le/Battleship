@@ -82,7 +82,7 @@ public class MainController implements EventHandler<MouseEvent>
 
         //pane_Main.getChildren().clear();
         minefield.makeMinefield();
-        StackPane pane_Main = new StackPane();
+        Pane pane_Main = new Pane();
         minefield.addMines();
 
         addMinefieldButtons();
@@ -148,24 +148,25 @@ public class MainController implements EventHandler<MouseEvent>
 
     //**************************************
     public void addMinefieldButtons() {
+        pane_Main.getChildren().clear();
         for (int x = 0; x < minefield.minefieldWidth; x++) {
             for (int y = 0; y < minefield.minefieldHeight; y++) {
-                minefield.minefield[x][y].button = new Button();
-                minefield.minefield[x][y].button.setLayoutX(cellSize * minefield.minefieldWidth);
-                minefield.minefield[x][y].button.setLayoutY(cellSize * minefield.minefieldHeight);
-                minefield.minefield[x][y].button.setPrefSize(cellSize,cellSize);
-                minefield.minefield[x][y].button.setStyle("-fx-background-insets: 0,1,2");
-                minefield.minefield[x][y].button.setStyle("-fx-padding: 8 8 8 8;");
+                Button button = new Button();
+                button.setLayoutX(x * cellSize);
+                button.setLayoutY(y * cellSize);
+                button.setPrefSize(cellSize, cellSize);
+                button.setStyle("-fx-background-insets: 0,1,2");
                 //Adding minefield button into pane
-                pane_Main.getChildren().add(minefield.minefield[x][y].button);
-                int i = x;
-                int j = y;
-                minefield.minefield[x][y].button.setOnMouseClicked(event -> {
-                    if (event.getButton() == MouseButton.SECONDARY) {   // mouse could have >2 buttons
-                        minefield.mark(minefield.minefield[i][j]);
+                pane_Main.getChildren().add(button);
+
+                int finalX = x;
+                int finalY = y;
+                button.setOnMouseClicked(event -> {
+                    if (event.getButton() == MouseButton.SECONDARY) { //mouse have 2
+                        minefield.mark(minefield.minefield[finalX][finalY]);
                     }
-                    if (event.getButton() == MouseButton.PRIMARY){      // using only 2
-                        minefield.expose(minefield.minefieldWidth, minefield.minefieldHeight);
+                    if (event.getButton() == MouseButton.PRIMARY) { //prx something
+                        minefield.expose(finalX, finalY);
                     }
                     cellClicked();
                     updateTimer();

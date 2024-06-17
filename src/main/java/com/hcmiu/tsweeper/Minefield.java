@@ -11,7 +11,7 @@ public class Minefield {
     int minefieldHeight = 10;                               // Control Number of Cell Y
 
     // grid amount of mines
-    int gridNumMines = 50;                                  // Number Mines    old:gridNormalNumMines
+    int gridNumMines = 10;                                  // Number Mines    old:gridNormalNumMines
 
     int numMinesatStart;                                    // Number mines at start
     int numMinesLeft   ;                                    // number mines left
@@ -23,8 +23,8 @@ public class Minefield {
 
     //constructor minefield
     public Minefield(){
-        numMinesLeft = 0;
-        numMinesatStart = 0;
+        numMinesLeft = 10;
+        numMinesatStart = 10;
         cellsUncovered =0;
         Cell[][] minefield = new Cell[10][10];                                     // DSA Array 2d
         exploded = false;
@@ -46,11 +46,11 @@ public class Minefield {
                 minefield[i][j].x = i;                              // x index in Cell[][] minefield
                 minefield[i][j].y = j;                              // y index in Cell[][] minefield
                 totalCells++;                                       // number of cell++
-                System.out.println("Cell X = "+ minefield[i][j].x +": Y = "+ minefield[i][j].y
-                        +": Mined = "+ minefield[i][j].mined +": flagged : "+ minefield[i][j].flagged);
             }
         }
     }
+
+
 
     //Check if cell is exposed/clicked or not
     public int isExposed(int column, int row)
@@ -157,16 +157,18 @@ public class Minefield {
 
     // random() method returns a random number between 0.0 and 0.999. then multiply it by 10,
     // so upper limit becomes 0.0 to 9.95, when you add 1, it becomes 1.0 to 10.95, Truncates to 10
-    void addMines(){
-        for (int i = 0; i < numMinesLeft; ++i)
-        {
-            int randomX = (int )(Math.random() * minefieldWidth );
-            int randomY = (int )(Math.random() * minefieldHeight );
-            if (minefield[randomX][randomY].mined == true ){ i--; }  // try again
-            if (minefield[randomX][randomY].mined == false) {        // set mine
-                minefield[randomX][randomY].mined = true;   }
+    void addMines() {
+        int minesAdded = 0;
+        while (minesAdded < numMinesatStart) {
+            int randomX = (int) (Math.random() * minefieldWidth);
+            int randomY = (int) (Math.random() * minefieldHeight);
+            if (!minefield[randomX][randomY].mined) {
+                minefield[randomX][randomY].mined = true;
+                minesAdded++;
+            }
         }
     }
+
 
     public int getNumMinesLeft()
     { return numMinesLeft; }                                        // total cells at start = difficulty level
