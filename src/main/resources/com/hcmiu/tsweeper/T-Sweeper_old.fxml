@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane prefHeight="473.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hcmiu.tsweeper.HelloController">
+<AnchorPane prefHeight="473.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hcmiu.tsweeper.MainController">
    <children>
       <StackPane fx:id="stkPane_Main" layoutX="14.0" layoutY="24.0" prefHeight="425.0" prefWidth="438.0">
          <children>
@@ -40,7 +40,7 @@
             </GridPane>
          </children>
       </StackPane>
-      <Button fx:id="bt_Start" layoutX="563.0" layoutY="85.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="110.0" text="Start" />
+      <Button fx:id="bt_Start" layoutX="563.0" layoutY="95.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="110.0" text="Start" />
       <ComboBox fx:id="cb_BOX_botSelection" layoutX="471.0" layoutY="32.0" prefHeight="38.0" prefWidth="294.0" />
       <Button fx:id="bt_Retry" layoutX="563.0" layoutY="163.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="110.0" text="Retry" />
    </children>
