@@ -24,8 +24,8 @@ public class Minefield {
 
     //constructor minefield
     public Minefield(){
-        numMinesLeft = 10;
-        numMinesatStart = 10;
+        numMinesLeft = 50;
+        numMinesatStart = 50;
         cellsUncovered =0;
         Cell[][] minefield = new Cell[10][10];              // DSA Array 2d
         exploded = false;
@@ -86,78 +86,38 @@ public class Minefield {
     { return totalCells - exposedCells -numMinesLeft; }
 
     // Exposed/ Left click Cell
-    public int expose(int x, int y)
-    {
-        Cell Cell = minefield[x][y];                        // Get Cell variable in index x,y
-        if (minefield[x][y].mined)                          // Case 1: Click in mine cell
-        {
-            exploded = true;                                //
-            Cell.button.setText("!");
-            return -1;                                      // will return -1 if mine exploded
+    public int expose(int x, int y) { //Passion
+        Cell cell = minefield[x][y];
+        if (minefield[x][y].mined) {
+            exploded = true;
+            cell.button.setText("!");
+            return -1;
         }
-        if (minefield[x][y].exposed == false)               // Case 2: Click in non-mine, non-exposed cell
-        {
-            Cell.button.setText("");
+        if (!minefield[x][y].exposed) {
+            cell.exposed = true;
             exposedCells++;
-            return neighborsMined(x,y);                     // will return 0-8
+            int minesAround = neighborsMined(x, y);
+            cell.button.setText(minesAround > 0 ? String.valueOf(minesAround) : "");
+            return minesAround;
         }
         return 0;
     }
 
-    // Return # of a neighbor mined around the clicked Cell
-    public int neighborsMined(int x, int y){
-        int countToShow =0;
-        int newXL;                                                      // looking at +/- 1 row
-        int newYL;                                                      // looking +/- 1 column
-        int newXH;
-        int newYH;
-                                                                        // EDGE case compares
-        if ( x-1 <minefieldWidth)                                       // wall to left
-        {
-            newXL = x;
-        }
-        else
-        {
-            newXL = x-1;                                                // XL = left cell
-        }
-        if (x+1 >minefieldWidth)                                        // wall to right
-        {
-            newXH = x;
-        }
-        else
-        {
-            newXH = x+1;                                                // XH  = right cell
-        }
-        if (y-1 <minefieldHeight)                                       // wall below
-        {
-            newYL = y;
-        }
-        else
-        {
-            newYL = y-1;                                                // YL = below cell
-        }
-        if (y+1 >minefieldHeight)                                       // wall above
-        {
-            newYH = y;
-        }
-        else
-        {
-            newYH = y+1;                                                // YH = Above cell
-        }
-        // Sumup, we have x,y, left x, right x, down y, up y to get the index of all 8 cells surrounding the chosen cell
-        for (int i=newXL; i < newXH ; i++   )                          //transverse from x left -> x -> x right
-        {
-            for ( int j=newYL ; j< newYH ; j++)                        //transverse from y low -> y -> y up
-            {
-                if ((i == x) && (j == y)){ continue; }                  // skip self
-                if (minefield[i][j].mined == true){ countToShow++; }    // add to # mines nearby
-                if (minefield[i][j].mined == false){ expose(i,j);  }    // expose Cell if .mined = false
+    public int neighborsMined(int x, int y) { //Passion
+        int countToShow = 0;
+        int newXL = Math.max(0, x - 1);
+        int newXH = Math.min(minefieldWidth - 1, x + 1);
+        int newYL = Math.max(0, y - 1);
+        int newYH = Math.min(minefieldHeight - 1, y + 1);
+
+        for (int i = newXL; i <= newXH; i++) {
+            for (int j = newYL; j <= newYH; j++) {
+                if (i == x && j == y) continue;
+                if (minefield[i][j].mined) countToShow++;
             }
         }
-        cellsUncovered++;
         return countToShow;
     }
-
     // set flag or unflag or mark for right-click action cell to note
     boolean mark(Cell cell) {
         if (cell.flagged != true) {
@@ -174,7 +134,7 @@ public class Minefield {
         while (minesAdded < numMinesatStart) {
             int randomX = (int) (Math.random() * minefieldWidth);
             int randomY = (int) (Math.random() * minefieldHeight);
-            if (!minefield[randomX][randomY].mined) {
+            if (!minefield[randomX][randomY].mined) { //Passion
                 minefield[randomX][randomY].mined = true;
                 minesAdded++;
             }

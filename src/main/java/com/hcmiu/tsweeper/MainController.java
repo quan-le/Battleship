@@ -153,7 +153,7 @@ public class MainController implements EventHandler<MouseEvent>
         for (int x = 0; x < minefield.minefieldWidth; x++) {
             for (int y = 0; y < minefield.minefieldHeight; y++) {
                 Button button = new Button();
-                button.setLayoutX(x * cellSize);
+                button.setLayoutX(x * cellSize); //Passion
                 button.setLayoutY(y * cellSize);
                 button.setPrefSize(cellSize, cellSize);
                 button.setStyle("-fx-background-insets: 0,1,2");
