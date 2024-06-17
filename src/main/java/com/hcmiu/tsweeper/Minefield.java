@@ -24,8 +24,8 @@ public class Minefield {
 
     //constructor minefield
     public Minefield(){
-        numMinesLeft = 50;
-        numMinesatStart = 50;
+        numMinesLeft = 2;
+        numMinesatStart = 2;
         cellsUncovered =0;
         Cell[][] minefield = new Cell[10][10];              // DSA Array 2d
         exploded = false;
@@ -88,19 +88,39 @@ public class Minefield {
     // Exposed/ Left click Cell
     public int expose(int x, int y) { //Passion
         Cell cell = minefield[x][y];
-        if (minefield[x][y].mined) {
+        if (minefield[x][y].mined)                                          // Case: Mine
+        {
             exploded = true;
             cell.button.setText("!");
             return -1;
         }
-        if (!minefield[x][y].exposed) {
+        if (!minefield[x][y].exposed && neighborsMined(x,y) >= 1)           // Case: Cell Surrounded with bomb
+        {
             cell.exposed = true;
             exposedCells++;
             int minesAround = neighborsMined(x, y);
             cell.button.setText(minesAround > 0 ? String.valueOf(minesAround) : "");
             return minesAround;
         }
+        if(!minefield[x][y].exposed && neighborsMined(x,y) == 0)
+        {
+            cell.exposed = true;
+            exposedCells++;
+            //checkSurroundingMine(x,y)
+            cell.button.setText("!=");
+        }
         return 0;
+    }
+    public void checkSurruondingMine(int x, int y, int diffX, int diffY)
+    {
+        int x_temp = x + diffX;
+        int y_temp = y + diffY;
+        int surroundedMine = neighborsMined(x_temp,y_temp);
+
+        if(surroundedMine == 0 && x_temp < minefieldWidth && y_temp < minefieldHeight)
+        {
+            //checkSurruondingMine(x,y);
+        }
     }
 
     public int neighborsMined(int x, int y) { //Passion
