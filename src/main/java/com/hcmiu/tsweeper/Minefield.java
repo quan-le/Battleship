@@ -24,8 +24,8 @@ public class Minefield {
 
     //constructor minefield
     public Minefield(){
-        numMinesLeft = 2;
-        numMinesatStart = 2;
+        numMinesLeft = 10;
+        numMinesatStart = 10;
         cellsUncovered =0;
         Cell[][] minefield = new Cell[10][10];              // DSA Array 2d
         exploded = false;
@@ -85,45 +85,41 @@ public class Minefield {
     public int unexposedCount()
     { return totalCells - exposedCells -numMinesLeft; }
 
-    // Exposed/ Left click Cell
-    public int expose(int x, int y) { //Passion
+    public int expose(int x, int y) {
         Cell cell = minefield[x][y];
-        if (minefield[x][y].mined)                                          // Case: Mine
-        {
+        if (minefield[x][y].mined) {
             exploded = true;
             cell.button.setText("!");
             return -1;
         }
-        if (!minefield[x][y].exposed && neighborsMined(x,y) >= 1)           // Case: Cell Surrounded with bomb
-        {
+        if (!minefield[x][y].exposed) {
             cell.exposed = true;
             exposedCells++;
             int minesAround = neighborsMined(x, y);
-            cell.button.setText(minesAround > 0 ? String.valueOf(minesAround) : "");
+            if (minesAround == 0) {
+                cell.button.setText("#");  // Leave # if no adjacent mines
+                checkSurroundingMines(x, y);
+            } else {
+                cell.button.setText(String.valueOf(minesAround));
+            }
             return minesAround;
-        }
-        if(!minefield[x][y].exposed && neighborsMined(x,y) == 0)
-        {
-            cell.exposed = true;
-            exposedCells++;
-            //checkSurroundingMine(x,y)
-            cell.button.setText("!=");
         }
         return 0;
     }
-    public void checkSurruondingMine(int x, int y, int diffX, int diffY)
-    {
-        int x_temp = x + diffX;
-        int y_temp = y + diffY;
-        int surroundedMine = neighborsMined(x_temp,y_temp);
 
-        if(surroundedMine == 0 && x_temp < minefieldWidth && y_temp < minefieldHeight)
-        {
-            //checkSurruondingMine(x,y);
+    public void checkSurroundingMines(int x, int y) {
+        int[] dx = {-1,  0, 0, 1}; //Direction
+        int[] dy = { 0, -1, 1, 0}; //Direction, they go pair together (only 4 basic directions)
+        for (int i = 0; i < 4; i++) { //iterate thru each neighbors cells
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (nx >= 0 && ny >= 0 && nx < minefieldWidth && ny < minefieldHeight && !minefield[nx][ny].exposed) {
+                expose(nx, ny);
+            }
         }
     }
 
-    public int neighborsMined(int x, int y) { //Passion
+    public int neighborsMined(int x, int y) {
         int countToShow = 0;
         int newXL = Math.max(0, x - 1);
         int newXH = Math.min(minefieldWidth - 1, x + 1);
@@ -138,12 +134,17 @@ public class Minefield {
         }
         return countToShow;
     }
+
     // set flag or unflag or mark for right-click action cell to note
     boolean mark(Cell cell) {
-        if (cell.flagged != true) {
+        if (!cell.flagged) {
             cell.flagged = true;
-            numMinesLeft--;}
-        else { cell.flagged = false; }
+            cell.button.setText("\uD83D\uDC80");
+            //numMinesLeft--;
+        } else {
+            cell.flagged = false;
+            cell.button.setText("");
+        }
         return cell.flagged;
     }
 

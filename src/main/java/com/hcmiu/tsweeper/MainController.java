@@ -51,10 +51,11 @@ public class MainController implements EventHandler<MouseEvent>
     @FXML
     private TextField textFieldTimer;
 
+    //Passion will take notices of these
+    Minefield minefield = new Minefield();      // minefield is the instance, ie... instance.function
+    Boolean endGame = false;                    // When u click the mine
+    Boolean success = false;                    // Total Exposed Cells = Total Cells - Cells with Mines
 
-    Minefield minefield = new Minefield();                        // minefield is the instance, ie... instance.function
-    Boolean endGame = false;
-    Boolean success = false;
     // Time
     Timer timer;
     double timeAtStart;                         // time since start in milli seconds
