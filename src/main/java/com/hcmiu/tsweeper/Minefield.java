@@ -4,16 +4,14 @@ import javafx.scene.control.*;
 public class Minefield {
 
     // Minefield dimensions
-    int gridNormalHeight = 10;
-    int gridNormalWidth = 10;
-
-    //Define board length
-    int minefieldWidth  = 10;                               // Control Number of Cell X
-    int minefieldHeight = 10;                               // Control Number of Cell Y
+    final int gridHeight = 10;                              // Control Number of Cell X
+    final int gridWidth = 10;                               // Control Number of Cell Y
 
     // grid amount of mines
-    int gridNumMines = 10;                                  // Number Mines    old:gridNormalNumMines
+    int gridNumMines = 10;                                  // Number Mines
 
+    int minefieldWidth  = gridHeight;
+    int minefieldHeight = gridWidth;
     int numMinesatStart;                                    // Number mines at start
     int numMinesLeft   ;                                    // number mines left
     int cellsUncovered = 0;                                 // Number of cell clicked, = 0 at start
@@ -24,16 +22,18 @@ public class Minefield {
 
     //constructor minefield
     public Minefield(){
-        numMinesLeft = 10;
-        numMinesatStart = 10;
+        numMinesLeft = gridNumMines;
+        numMinesatStart = gridNumMines;
         cellsUncovered =0;
-        Cell[][] minefield = new Cell[10][10];              // DSA Array 2d
+        Cell[][] minefield = new Cell[numMinesLeft][numMinesLeft];                      // DSA Array 2d
         exploded = false;
     }
 
     // Generate MineField Cell[][]
     public void makeMinefield()
     {
+        //Define board length
+
         minefield = new Cell[minefieldWidth][minefieldHeight];      //2D Array Cell[][]
         System.out.println("generating 'MineField' ");
         //Use for loop to create cell in minefield
@@ -108,9 +108,9 @@ public class Minefield {
     }
 
     public void checkSurroundingMines(int x, int y) {
-        int[] dx = {-1,  0, 0, 1}; //Direction
-        int[] dy = { 0, -1, 1, 0}; //Direction, they go pair together (only 4 basic directions)
-        for (int i = 0; i < 4; i++) { //iterate thru each neighbors cells
+        int[] dx = {-1,  0, 0, 1};                                  //XDirection
+        int[] dy = { 0, -1, 1, 0};                                  //YDirection, they go pair together (up, down, left, right)
+        for (int i = 0; i < 4; i++) {                               //iterate thru each neighbors cells
             int nx = x + dx[i];
             int ny = y + dy[i];
             if (nx >= 0 && ny >= 0 && nx < minefieldWidth && ny < minefieldHeight && !minefield[nx][ny].exposed) {
@@ -135,16 +135,22 @@ public class Minefield {
         return countToShow;
     }
 
-    // set flag or unflag or mark for right-click action cell to note
-    boolean mark(Cell cell) {
-        if (!cell.flagged) {
-            cell.flagged = true;
-            cell.button.setText("\uD83D\uDC80");
-            //numMinesLeft--;
-        } else {
-            cell.flagged = false;
-            cell.button.setText("");
-        }
+    // set flag or unflag or mark for right-click action cell to note, only when the flag are put correctly, numMineleft--
+    boolean mark(Cell cell)
+    {
+            if (!cell.flagged && numMinesLeft > 0) {
+                cell.flagged = true;
+                cell.button.setText("\uD83D\uDC80");
+
+                if(cell.mined) {
+                    numMinesLeft--;
+                }
+            }
+            else {
+                cell.flagged = false;
+                cell.button.setText("");
+
+            }
         return cell.flagged;
     }
 

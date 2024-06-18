@@ -4,6 +4,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.binding.Binding;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -14,6 +21,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
+
+import static javafx.beans.binding.Binding.*;
 
 public class MainController implements EventHandler<MouseEvent>
 {
@@ -23,9 +33,6 @@ public class MainController implements EventHandler<MouseEvent>
 
     @FXML
     private URL location;
-
-    @FXML
-    private Button bt_Pause;
 
     @FXML
     private Button bt_Retry;
@@ -46,10 +53,13 @@ public class MainController implements EventHandler<MouseEvent>
     private Pane pane_Main;
 
     @FXML
-    private TextField textFieldMines;
+    public TextField textFieldMines;
 
     @FXML
     private TextField textFieldTimer;
+
+    @FXML
+    private Label labelMineLeft;
 
     //Passion will take notices of these
     Minefield minefield = new Minefield();      // minefield is the instance, ie... instance.function
@@ -58,10 +68,11 @@ public class MainController implements EventHandler<MouseEvent>
 
     // Time
     Timer timer;
+    Timeline timer1;
     double timeAtStart;                         // time since start in milli seconds
     double timeElapsed = 0;                     // ? usage
     boolean started;                            // check game started?
-    int cellSize =30;                           //
+    int cellSize = 45;                           //
     public String difficultyLevel ;             // set to Normal?
 
     @Override
@@ -80,7 +91,7 @@ public class MainController implements EventHandler<MouseEvent>
 
     public void startGame() {
         System.out.println("begin 'startGame' ");
-
+        textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
         //pane_Main.getChildren().clear();
         minefield.makeMinefield();
         Pane pane_Main = new Pane();
@@ -89,6 +100,8 @@ public class MainController implements EventHandler<MouseEvent>
         addMinefieldButtons();
         minefield.printMinefield();
         timer = new Timer();
+        timer1 = new Timeline();
+        timeCounter();
         started = false;
         setTextFieldsandLabels();
         System.out.println("end game 'startGame' ");
@@ -102,13 +115,17 @@ public class MainController implements EventHandler<MouseEvent>
         */
         StartButton();
     }
-
+    public int updatetextFieldMine()
+    {
+        while(!(minefield.exploded))
+        {
+            textFieldTimer.textProperty().set(String.valueOf(minefield.numMinesLeft));
+        }
+        return minefield.numMinesLeft;
+    }
     //@Override
     public void handle(ActionEvent event)
     {
-        if (event.getSource() == bt_Pause){
-            System.out.println("Pause Button: ");
-        }
         if (event.getSource()== bt_Start ){
             System.out.println("Reset Button: ");
         }
@@ -116,15 +133,14 @@ public class MainController implements EventHandler<MouseEvent>
 
     void setTextFieldsandLabels(){
         textFieldTimer = new TextField();
-        textFieldTimer.setText(" This is my new text. method = setTextFieldandLabels() ");
+        //textFieldTimer.setText("time");
         labelTime = new Label();
         labelTime.setText("Time");
         textFieldMines = new TextField();
-        textFieldMines.setText("This is my new text.");
+        textFieldMines.setText(String.valueOf(minefield.numMinesLeft));
         labelMines = new Label();
         labelMines.setText("MinesLeft");
     }
-
 
     int numMinesLeft() {
         return minefield.numMinesLeft;
@@ -137,6 +153,20 @@ public class MainController implements EventHandler<MouseEvent>
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Hello World! - Start Button");
+                while(!(minefield.exploded || (minefield.numMinesLeft == 0)))
+                {
+                    textFieldTimer.setText("time:" );
+                    updateTimer();
+                    System.out.println();
+                    if(!minefield.exploded)
+                    {
+                        textFieldTimer.textProperty().set(String.valueOf(minefield.numMinesLeft));
+                        labelMines.setText("Time:" + String.valueOf(minefield.getNumMinesLeft()));
+                        timeCounter();
+                        System.out.println(timeCounter());
+                    }
+                }
+
             }
         });
         startOver();   // timer START
@@ -144,19 +174,15 @@ public class MainController implements EventHandler<MouseEvent>
         // if (mouse.button == clicked )
     }
 
-
-    // http://www.programcreek.com/java-api-examples/index.php?api=javafx.scene.control.ButtonBuilder
-    // http://docs.oracle.com/javafx/2/layout/size_align.htm
-
     //**************************************
     public void addMinefieldButtons() {
         pane_Main.getChildren().clear();
         for (int x = 0; x < minefield.minefieldWidth; x++) {
             for (int y = 0; y < minefield.minefieldHeight; y++) {
                 Button button = new Button();
-                button.setLayoutX(x * cellSize); //Passion
+                button.setLayoutX(x * cellSize);                    //Passion
                 button.setLayoutY(y * cellSize);
-                button.setPrefSize(cellSize, cellSize);
+                button.setPrefSize(cellSize , cellSize);
                 button.setStyle("-fx-background-insets: 0,1,2");
                 //Adding minefield button into pane
                 pane_Main.getChildren().add(button);
@@ -167,6 +193,8 @@ public class MainController implements EventHandler<MouseEvent>
                 button.setOnMouseClicked(event -> {
                     if (event.getButton() == MouseButton.SECONDARY) { //mouse have 2
                         minefield.mark(minefield.minefield[finalX][finalY]);
+                        textFieldTimer.textProperty().set(String.valueOf(minefield.numMinesLeft));
+
                     }
                     if (event.getButton() == MouseButton.PRIMARY) { //prx something
                         minefield.expose(finalX, finalY);
@@ -183,7 +211,11 @@ public class MainController implements EventHandler<MouseEvent>
             startOver();
             started = true;
         }
-        System.out.println("Mines Left: "+ minefield.getNumMinesLeft());
+        if(!endGame) {
+            System.out.println("Mines Left: " + minefield.getNumMinesLeft());
+            textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
+
+        }
         if (minefield.exploded) {
             endGame = true;
             success = false;
@@ -201,13 +233,20 @@ public class MainController implements EventHandler<MouseEvent>
     }
     private void updateTimer() {
         if (!(minefield.exploded || (minefield.numMinesLeft == 0)))
-
-            labelTime.setText("Time:  "+ textFieldTimer);
+            textFieldTimer.setText("");
     }
 
-    Integer timeCounter() {
-        double timePassed = (System.currentTimeMillis() - timeAtStart)/1000.0;
-        return (int) timePassed;        // set start = current clock time, start - current  = time elapsed
+    public Timeline timeCounter() {
+        LongProperty startTime = new SimpleLongProperty(0);
+        timer1 = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    startTime.set(startTime.get() + 1);
+                    textFieldTimer.textProperty().set(String.valueOf(startTime.get()) + " seconds");
+                })
+        );
+        timer1.setCycleCount(Animation.INDEFINITE);
+        timer1.play();
+        return timer1;
     }
 
     private void pause() {              // set pause button 1) if pressed 2) if mine triggered

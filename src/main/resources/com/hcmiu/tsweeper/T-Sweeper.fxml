@@ -6,19 +6,35 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="545.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hcmiu.tsweeper.MainController">
    <children>
       <AnchorPane layoutX="471.0" layoutY="-2.0" prefHeight="545.0" prefWidth="302.0">
          <children>
-            <TextField fx:id="textFieldTimer" layoutX="24.0" layoutY="284.0" minHeight="30.0" minWidth="40.0" prefHeight="32.0" prefWidth="58.0" promptText="Time" />
             <Label fx:id="labelTime" alignment="TOP_CENTER" layoutX="128.0" layoutY="291.0" prefWidth="40.0" text="Time" />
-            <TextField fx:id="textFieldMines" layoutX="24.0" layoutY="340.0" minHeight="30.0" minWidth="40.0" prefHeight="30.0" prefWidth="58.0" promptText="Mines" />
             <Label fx:id="labelMines" alignment="TOP_CENTER" layoutX="113.0" layoutY="346.0" prefWidth="75.0" text="Mines Left" />
             <Button fx:id="bt_Start" layoutX="92.0" layoutY="63.0" mnemonicParsing="false" onAction="#startGame" prefHeight="48.0" prefWidth="110.0" text="Start" />
-            <ComboBox fx:id="cb_BOX_botSelection" layoutX="6.0" layoutY="14.0" prefHeight="38.0" prefWidth="294.0" />
+            <ComboBox fx:id="cb_BOX_botSelection" layoutX="6.0" layoutY="14.0" prefHeight="38.0" prefWidth="294.0" promptText="Chosing Bot" />
             <Button fx:id="bt_Retry" layoutX="92.0" layoutY="131.0" mnemonicParsing="false" onAction="#startOver" prefHeight="48.0" prefWidth="110.0" text="Retry" />
-            <Button fx:id="bt_Pause" layoutX="92.0" layoutY="208.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="110.0" text="Pause" />
+            <TextField fx:id="textFieldTimer" layoutX="24.0" layoutY="284.0" prefHeight="30.0" prefWidth="58.0" promptText="Time" />
+            <TextField fx:id="textFieldMines" layoutX="24.0" layoutY="339.0" prefHeight="30.0" prefWidth="58.0" promptText="Mines" />
+            <Label layoutX="124.0" layoutY="391.0" text="! : MINE" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="82.0" layoutY="424.0" text="#: No Surrounding Bomb" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="69.0" layoutY="464.0" text="💀: Mark mine with right click" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelMineLeft" layoutX="222.0" layoutY="346.0" text="Label" />
          </children>
       </AnchorPane>
       <Pane fx:id="pane_Main" layoutX="14.0" layoutY="31.0" onMouseClicked="#cellClicked" prefHeight="475.0" prefWidth="450.0" />
