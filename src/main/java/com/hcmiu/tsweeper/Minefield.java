@@ -16,7 +16,7 @@ public class Minefield {
     int numMinesLeft   ;                                    // number mines left
     int cellsUncovered = 0;                                 // Number of cell clicked, = 0 at start
     boolean exploded;                                       // Keep track of losing the game
-    Cell[][] minefield;                                     // DSA Array 2d
+    static Cell[][] minefield;                                     // DSA Array 2d
     int totalCells=0;                                       // Keep track of number of cell created
     int exposedCells=0;                                     // Keep track of number of cell clicked/exposed
 
@@ -74,7 +74,7 @@ public class Minefield {
     }
 
     //return MineField Cell[][]
-    public Cell[][] getMinefield()
+    public static Cell[][] getMinefield()
     { return minefield; }
 
     // Return # of mine left
@@ -145,6 +145,7 @@ public class Minefield {
                 if(cell.mined) {
                     numMinesLeft--;
                 }
+
             }
             else {
                 cell.flagged = false;

@@ -15,8 +15,7 @@
             <Label fx:id="labelTime" alignment="TOP_CENTER" layoutX="128.0" layoutY="291.0" prefWidth="40.0" text="Time" />
             <Label fx:id="labelMines" alignment="TOP_CENTER" layoutX="113.0" layoutY="346.0" prefWidth="75.0" text="Mines Left" />
             <Button fx:id="bt_Start" layoutX="92.0" layoutY="63.0" mnemonicParsing="false" onAction="#startGame" prefHeight="48.0" prefWidth="110.0" text="Start" />
-            <ComboBox fx:id="cb_BOX_botSelection" layoutX="6.0" layoutY="14.0" prefHeight="38.0" prefWidth="294.0" promptText="Chosing Bot" />
-            <Button fx:id="bt_Retry" layoutX="92.0" layoutY="131.0" mnemonicParsing="false" onAction="#startOver" prefHeight="48.0" prefWidth="110.0" text="Retry" />
+            <ComboBox fx:id="cb_BOX_botSelection" layoutX="6.0" layoutY="14.0" onAction="#getCBBoxOption" prefHeight="38.0" prefWidth="294.0" promptText="Chosing Bot" />
             <TextField fx:id="textFieldTimer" layoutX="24.0" layoutY="284.0" prefHeight="30.0" prefWidth="58.0" promptText="Time" />
             <TextField fx:id="textFieldMines" layoutX="24.0" layoutY="339.0" prefHeight="30.0" prefWidth="58.0" promptText="Mines" />
             <Label layoutX="124.0" layoutY="391.0" text="! : MINE" textAlignment="CENTER" wrapText="true">
@@ -37,6 +36,6 @@
             <Label fx:id="labelMineLeft" layoutX="222.0" layoutY="346.0" text="Label" />
          </children>
       </AnchorPane>
-      <Pane fx:id="pane_Main" layoutX="14.0" layoutY="31.0" onMouseClicked="#cellClicked" prefHeight="475.0" prefWidth="450.0" />
+      <Pane fx:id="pane_Main" layoutX="14.0" layoutY="31.0" onMouseClicked="#cellClicked" onMouseExited="#numMinesLeft" prefHeight="475.0" prefWidth="450.0" />
    </children>
 </AnchorPane>
