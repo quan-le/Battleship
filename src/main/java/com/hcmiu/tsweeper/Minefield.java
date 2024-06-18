@@ -1,5 +1,6 @@
 package com.hcmiu.tsweeper;
 import javafx.scene.control.*;
+import javafx.application.Platform;
 
 public class Minefield {
 
@@ -136,23 +137,30 @@ public class Minefield {
     }
 
     // set flag or unflag or mark for right-click action cell to note, only when the flag are put correctly, numMineleft--
-    boolean mark(Cell cell)
-    {
-            if (!cell.flagged && numMinesLeft > 0) {
-                cell.flagged = true;
-                cell.button.setText("\uD83D\uDC80");
+    boolean mark(Cell cell) {
+        if (!cell.flagged && numMinesLeft > 0) {
+            cell.flagged = true;
+            cell.button.setText("\uD83D\uDC80");
 
-                if(cell.mined) {
-                    numMinesLeft--;
-                }
-
+            if (cell.mined) {
+                numMinesLeft--;
+                updateMineLeftDisplay();
             }
-            else {
-                cell.flagged = false;
-                cell.button.setText("");
+        } else {
+            cell.flagged = false;
+            cell.button.setText("");
 
+            if (cell.mined) {
+                numMinesLeft++;
+                updateMineLeftDisplay();
             }
+        }
         return cell.flagged;
+    }
+
+    // Method to update the mine left display
+    void updateMineLeftDisplay() {
+
     }
 
     // random() method returns a random number between 0.0 and 0.999. then multiply it by 10,

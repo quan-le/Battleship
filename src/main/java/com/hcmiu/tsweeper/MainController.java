@@ -3,7 +3,7 @@ package com.hcmiu.tsweeper;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
-
+import javafx.application.Platform;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -22,17 +22,22 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-
+import javafx.scene.text.Text;
+import javafx.fxml.Initializable;
+import java.net.URL;
+import java.util.ResourceBundle;
 import static javafx.beans.binding.Binding.*;
 
-public class MainController implements EventHandler<MouseEvent>
-{
+public class MainController implements EventHandler<MouseEvent> {
 
     @FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
+
+    @FXML
+    private Button bt_Retry;
 
     @FXML
     private Button bt_Start;
@@ -53,10 +58,16 @@ public class MainController implements EventHandler<MouseEvent>
     public TextField textFieldMines;
 
     @FXML
-    private TextField textFieldTimer;
+    private Label labelMineLeft;
 
     @FXML
-    private Label labelMineLeft;
+    private Text textTimeLeft;
+
+    private static MainController instance;
+
+    public MainController() {
+        instance = this;
+    }
 
     //Passion will take notices of these
     Minefield minefield = new Minefield();      // minefield is the instance, ie... instance.function
@@ -64,34 +75,34 @@ public class MainController implements EventHandler<MouseEvent>
     Boolean success = false;                    // Total Exposed Cells = Total Cells - Cells with Mines
 
     // Time
-    Timer timer;
-    Timeline timer1;
     double timeAtStart;                         // time since start in milli seconds
     double timeElapsed = 0;                     // ? usage
     boolean started;                            // check game started?
     int cellSize = 45;                           //
-    public String difficultyLevel ;             // set to Normal?
+    int i = 0;
     public String BotChosen;
 
     @Override
-    public void handle(MouseEvent event)
-    {
+    public void handle(MouseEvent event) {
 
     }
+
     @FXML
-    void initialize()
-    {
+    void initialize() {
+        instance = this;
         System.out.println("Game Setup Begin ");
         //minefield = new Minefield();
+        //difficultyBox();
+        textFieldMines.setText(String.valueOf(minefield.numMinesLeft));
         setTextFieldsandLabels();
         textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
         System.out.println("Game Setup End ");
-        startGame();
-
+        //startGame();
     }
 
     public void startGame() {
         System.out.println("begin 'startGame' ");
+        textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
         //pane_Main.getChildren().clear();
         minefield.makeMinefield();
         Pane pane_Main = new Pane();
@@ -101,29 +112,19 @@ public class MainController implements EventHandler<MouseEvent>
         minefield.printMinefield();
         started = false;
         setTextFieldsandLabels();
-        StartButton();
         System.out.println("end game 'startGame' ");
-
+        StartButton();
 
     }
-    public int updatetextFieldMine()
-    {
-        while(!(minefield.exploded))
-        {
-            textFieldTimer.textProperty().set(String.valueOf(minefield.numMinesLeft));
-        }
-        return minefield.numMinesLeft;
-    }
+
     //@Override
-    public void handle(ActionEvent event)
-    {
-        if (event.getSource()== bt_Start ){
+    public void handle(ActionEvent event) {
+        if (event.getSource() == bt_Start) {
             System.out.println("Reset Button: ");
         }
     }
 
-    void setTextFieldsandLabels(){
-        textFieldTimer = new TextField();
+    void setTextFieldsandLabels() {
         //textFieldTimer.setText("time");
         labelTime = new Label();
         labelTime.setText("Time");
@@ -158,24 +159,20 @@ public class MainController implements EventHandler<MouseEvent>
     void StartButton() {
         Button bt_Start = new Button();
         bt_Start.setText("Say 'Hello World'");
+        startTimer();
         bt_Start.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hello World! - Start Button");
-                while(!(minefield.exploded || (minefield.numMinesLeft == 0)))
-                {
-                    textFieldTimer.setText("time:" );
+                System.out.println("Start Passion");
+                while (!(minefield.exploded || (minefield.numMinesLeft == 0))) {
                     System.out.println();
-                    if(!minefield.exploded)
-                    {
-                        textFieldTimer.textProperty().set(String.valueOf(minefield.numMinesLeft));
+                    if (!minefield.exploded) {
                         labelMines.setText("Time:" + String.valueOf(minefield.getNumMinesLeft()));
                     }
                 }
 
             }
         });
-
         // public void handle() { handle(); }
         // if (mouse.button == clicked )
     }
@@ -188,25 +185,24 @@ public class MainController implements EventHandler<MouseEvent>
                 Button button = new Button();
                 button.setLayoutX(x * cellSize);                    //Passion
                 button.setLayoutY(y * cellSize);
-                button.setPrefSize(cellSize , cellSize);
+                button.setPrefSize(cellSize, cellSize);
                 button.setStyle("-fx-background-insets: 0,1,2");
                 //Adding minefield button into pane
                 pane_Main.getChildren().add(button);
-                minefield.addButtonToCell(x,y,button);
+                minefield.addButtonToCell(x, y, button);
 
                 int finalX = x;
                 int finalY = y;
                 button.setOnMouseClicked(event -> {
-                    if (event.getButton() == MouseButton.SECONDARY) { //mouse have 2
+                    if (event.getButton() == MouseButton.SECONDARY) { // mouse have 2
                         minefield.mark(minefield.minefield[finalX][finalY]);
-                        textFieldTimer.textProperty().set(String.valueOf(minefield.numMinesLeft));
-
+                        // Update the mine left display
+                        textFieldMines.setText(String.valueOf(minefield.numMinesLeft));
                     }
-                    if (event.getButton() == MouseButton.PRIMARY) { //prx something
+                    if (event.getButton() == MouseButton.PRIMARY) { // primary button click
                         minefield.expose(finalX, finalY);
                     }
                     cellClicked();
-
                 });
             }
         }
@@ -214,10 +210,9 @@ public class MainController implements EventHandler<MouseEvent>
 
     public void cellClicked() {
         if (!started) {
-
             started = true;
         }
-        if(!endGame) {
+        if (!endGame) {
             System.out.println("Mines Left: " + minefield.getNumMinesLeft());
             textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
 
@@ -234,8 +229,7 @@ public class MainController implements EventHandler<MouseEvent>
         }
     }
 
-    private void pause()                                                    // set pause if mine triggered
-    {
+    private void pause() {              // set pause button 1) if pressed 2) if mine triggered
         Button pause = new Button();
         for (int x = 0; x < minefield.minefieldWidth; x++) {
             for (int y = 0; y < minefield.minefieldHeight; y++) {
@@ -252,10 +246,32 @@ public class MainController implements EventHandler<MouseEvent>
             }
         }
     }
+
+    // Static method to update the mine left display
+    public static void updateMineLeftDisplay(int minesLeft) {
+        if (instance != null) {
+            Platform.runLater(() -> {
+                instance.textFieldMines.setText(String.valueOf(minesLeft));
+            });
+        }
+    }
     public void QLBot()
     {
         minefield.expose(0,0);
         minefield.mark(minefield.minefield[0][1]);
     }
 
+    void startTimer()
+    {
+        textTimeLeft.setText(String.valueOf(i));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            i++;
+            textTimeLeft.setText(String.valueOf(i));
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
 }
+
+
+
