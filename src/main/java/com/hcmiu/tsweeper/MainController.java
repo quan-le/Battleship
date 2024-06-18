@@ -92,15 +92,14 @@ public class MainController implements EventHandler<MouseEvent> {
         instance = this;
         System.out.println("Game Setup Begin ");
         //minefield = new Minefield();
-        //difficultyBox();
-        textFieldMines.setText(String.valueOf(minefield.numMinesLeft));
         setTextFieldsandLabels();
         textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
         System.out.println("Game Setup End ");
         //startGame();
     }
 
-    public void startGame() {
+    public void startGame()
+    {
         System.out.println("begin 'startGame' ");
         textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
         //pane_Main.getChildren().clear();
@@ -114,6 +113,21 @@ public class MainController implements EventHandler<MouseEvent> {
         setTextFieldsandLabels();
         System.out.println("end game 'startGame' ");
         StartButton();
+
+        //chosing bot
+        System.out.println(cb_BOX_botSelection.getValue());
+        if(cb_BOX_botSelection.getValue() == "Bot Quan Le")
+        {
+            QLBot();
+        }
+        if(cb_BOX_botSelection.getValue() == "Bot Anh Dung")
+        {
+            QLBot();
+        }
+        if(cb_BOX_botSelection.getValue() == "Bot Dinh Quang")
+        {
+            QLBot();
+        }
 
     }
 
@@ -137,7 +151,6 @@ public class MainController implements EventHandler<MouseEvent> {
     public void generateCBBoxOption()
     {
         //ComboBox<String> cb_BOX_botSelection = new ComboBox<>();
-        cb_BOX_botSelection.getItems().clear();
         cb_BOX_botSelection.getItems().add("Bot Quan Le");
         cb_BOX_botSelection.getItems().add("Bot Anh Dung");
         cb_BOX_botSelection.getItems().add("Bot Dinh Quang");
@@ -156,16 +169,23 @@ public class MainController implements EventHandler<MouseEvent> {
         return minefield.numMinesLeft;
     }
 
+    int surroundMine(int x, int y)
+    {
+        int surroundMine = minefield.neighborsMined(x,y);
+        return surroundMine;
+    }
+
     void StartButton() {
         Button bt_Start = new Button();
         bt_Start.setText("Say 'Hello World'");
         startTimer();
+
         bt_Start.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Start Passion");
-                while (!(minefield.exploded || (minefield.numMinesLeft == 0))) {
-                    System.out.println();
+                while (!(minefield.exploded || (minefield.numMinesLeft == 0)))
+                {
                     if (!minefield.exploded) {
                         labelMines.setText("Time:" + String.valueOf(minefield.getNumMinesLeft()));
                     }
@@ -255,11 +275,6 @@ public class MainController implements EventHandler<MouseEvent> {
             });
         }
     }
-    public void QLBot()
-    {
-        minefield.expose(0,0);
-        minefield.mark(minefield.minefield[0][1]);
-    }
 
     void startTimer()
     {
@@ -271,6 +286,12 @@ public class MainController implements EventHandler<MouseEvent> {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
+    public void QLBot()
+    {
+        minefield.expose(0,0);
+        minefield.mark(minefield.minefield[0][1]);
+    }
+
 }
 
 

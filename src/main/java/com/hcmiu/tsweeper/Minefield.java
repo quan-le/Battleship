@@ -98,7 +98,7 @@ public class Minefield {
             exposedCells++;
             int minesAround = neighborsMined(x, y);
             if (minesAround == 0) {
-                cell.button.setText("#");  // Leave # if no adjacent mines
+                cell.button.setText("#");                           // Leave # if no adjacent mines
                 checkSurroundingMines(x, y);
             } else {
                 cell.button.setText(String.valueOf(minesAround));

@@ -21,4 +21,7 @@ public class Cell {
         nearMines = 0;
     }
 
+    public int getNearMines() {
+        return nearMines;
+    }
 }
