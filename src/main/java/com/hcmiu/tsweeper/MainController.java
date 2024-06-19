@@ -27,6 +27,8 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 import static javafx.beans.binding.Binding.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.image.ImageView;
 
 public class MainController implements EventHandler<MouseEvent> {
 
@@ -52,10 +54,22 @@ public class MainController implements EventHandler<MouseEvent> {
     private Pane pane_Main;
 
     @FXML
+    private AnchorPane leftPane;
+
+    @FXML
+    private AnchorPane winPane;
+
+    @FXML
+    private ImageView winMenu;
+
+    @FXML
     private Label labelMineLeft;
 
     @FXML
     private Text textTimeLeft;
+
+    @FXML
+    private Text textWinMenu;
 
     private static MainController instance;
 
@@ -69,8 +83,7 @@ public class MainController implements EventHandler<MouseEvent> {
     Boolean success = false;                    // Total Exposed Cells = Total Cells - Cells with Mines
 
     // Time
-    double timeAtStart;                         // time since start in milli seconds
-    double timeElapsed = 0;                     // ? usage
+    Timeline timeline;
     boolean started;                            // check game started?
     int cellSize = 45;                           //
     int i = 0;
@@ -89,6 +102,8 @@ public class MainController implements EventHandler<MouseEvent> {
         setTextFieldsandLabels();
         System.out.println("Game Setup End ");
         //startGame();
+        winPane.setVisible(false);
+        textWinMenu.setVisible(false);
     }
 
     public void startGame()
@@ -174,6 +189,7 @@ public class MainController implements EventHandler<MouseEvent> {
         bt_Start.setText("Say 'Hello World'");
         startTimer();
 
+
         bt_Start.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -249,33 +265,40 @@ public class MainController implements EventHandler<MouseEvent> {
             for (int y = 0; y < minefield.minefieldHeight; y++) {
                 Button button = minefield.minefield[x][y].button;
                 //endgame condition
-                if (minefield.exploded || minefield.minefield[x][y].mined)  //mine exploded
+                if (minefield.exploded || minefield.minefield[x][y].mined) {  //mine exploded (lose)
                     // Change this to only happen on specified button, all others expose or SHOW
-                    button.setText("!");                                    // show remaining mines
-                button.setOnMouseClicked(event -> {                         // no click
-                    if (event.getButton() == MouseButton.SECONDARY) {
-                        //do nothing
-                    }
-                    button.setDisable(true);  // should disable buttons
-                });
+                    button.setText("!");
+                    stopTimer();// show remaining mines
+                    winPane.setVisible(true);
+                    leftPane.setVisible(false);
+                    pane_Main.setVisible(false);
+                } else if(minefield.numMinesLeft == 0) {
+                    stopTimer();
+                    textWinMenu.setVisible(true);
+                    winPane.setVisible(false);
+                    leftPane.setVisible(true);
+                    pane_Main.setVisible(true);
+                }
             }
         }
     }
 
-    //todoflash3ku: - finish the mineleft() thing
-    //- make the endgame()
-    //- assign the timer to stop when endgame() is called
-
-    void startTimer()
-    {
+    void startTimer() {
         textTimeLeft.setText(String.valueOf(i));
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             i++;
             textTimeLeft.setText(String.valueOf(i));
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
+
+    void stopTimer() {
+        if (timeline != null) {
+            timeline.stop();
+        }
+    }
+
     public void QLBot()
     {
         minefield.expose(9, 4);
