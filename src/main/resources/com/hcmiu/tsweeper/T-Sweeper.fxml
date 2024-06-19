@@ -22,7 +22,6 @@
                </font></Label>
             <Button fx:id="bt_Start" layoutX="92.0" layoutY="63.0" mnemonicParsing="false" onAction="#startGame" prefHeight="48.0" prefWidth="110.0" text="Start" />
             <ComboBox fx:id="cb_BOX_botSelection" layoutX="6.0" layoutY="14.0" prefHeight="38.0" prefWidth="294.0" promptText="Chosing Bot" />
-            <Button layoutX="92.0" layoutY="131.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="110.0" text="Retry" />
             <Label layoutX="124.0" layoutY="391.0" text="! : MINE" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="System Bold" size="12.0" />

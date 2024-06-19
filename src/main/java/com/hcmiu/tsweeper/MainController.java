@@ -184,7 +184,6 @@ public class MainController implements EventHandler<MouseEvent> {
                         labelMines.setText("Time:" + String.valueOf(minefield.getNumMinesLeft()));
                     }
                 }
-
             }
         });
         // public void handle() { handle(); }
@@ -231,7 +230,6 @@ public class MainController implements EventHandler<MouseEvent> {
             System.out.println("Mines Left: " + minefield.getNumMinesLeft());
             labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
 
-
         }
         if (minefield.exploded) {
             endGame = true;
@@ -268,8 +266,6 @@ public class MainController implements EventHandler<MouseEvent> {
     //- make the endgame()
     //- assign the timer to stop when endgame() is called
 
-
-
     void startTimer()
     {
         textTimeLeft.setText(String.valueOf(i));
@@ -282,8 +278,12 @@ public class MainController implements EventHandler<MouseEvent> {
     }
     public void QLBot()
     {
-        minefield.expose(9,4);
-        minefield.expose(9,5);
+        minefield.expose(9, 4);
+        minefield.expose(9, 5);
+        for (int i = 9; i >= 0; i--)
+        {
+            
+        }
 
         //minefield.mark(minefield.minefield[0][1]);
     }
