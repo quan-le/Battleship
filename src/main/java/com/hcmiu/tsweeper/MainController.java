@@ -104,7 +104,7 @@ public class MainController implements EventHandler<MouseEvent> {
         minefield.printMinefield();
         started = false;
         setTextFieldsandLabels();
-        System.out.println("end game 'startGame' ");
+        System.out.println("end 'startGame' ");
         StartButton();
 
         //chosing bot
@@ -250,6 +250,7 @@ public class MainController implements EventHandler<MouseEvent> {
         for (int x = 0; x < minefield.minefieldWidth; x++) {
             for (int y = 0; y < minefield.minefieldHeight; y++) {
                 Button button = minefield.minefield[x][y].button;
+                //endgame condition
                 if (minefield.exploded || minefield.minefield[x][y].mined)  //mine exploded
                     // Change this to only happen on specified button, all others expose or SHOW
                     button.setText("!");                                    // show remaining mines
@@ -266,7 +267,6 @@ public class MainController implements EventHandler<MouseEvent> {
     //todoflash3ku: - finish the mineleft() thing
     //- make the endgame()
     //- assign the timer to stop when endgame() is called
-    //- make the UI better?
 
 
 
