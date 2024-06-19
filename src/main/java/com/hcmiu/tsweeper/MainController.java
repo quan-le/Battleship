@@ -240,17 +240,17 @@ public class MainController implements EventHandler<MouseEvent> {
         if (minefield.exploded) {
             endGame = true;
             success = false;
-            pause();
+            stop();
         }
         if (minefield.numMinesLeft == 0) {
             endGame = true;
             success = true;
-            pause();
+            stop();
         }
     }
 
-    private void pause() {              // set pause button 1) if pressed 2) if mine triggered
-        Button pause = new Button();
+    private void stop() {                 // set pause button 1) if pressed 2) if mine triggered
+        Button pause = new Button();      //timer stop when stop() is called using timeline.stop()
         for (int x = 0; x < minefield.minefieldWidth; x++) {
             for (int y = 0; y < minefield.minefieldHeight; y++) {
                 Button button = minefield.minefield[x][y].button;
@@ -267,7 +267,12 @@ public class MainController implements EventHandler<MouseEvent> {
         }
     }
 
+    //todoflash3ku: - finish the mineleft() thing
+    //- make the endgame()
+    //- assign the timer to stop when endgame() is called
+    //- make the UI better?
     // Static method to update the mine left display
+
     public static void updateMineLeftDisplay(int minesLeft) {
         if (instance != null) {
             Platform.runLater(() -> {
