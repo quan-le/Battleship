@@ -303,9 +303,12 @@ public class MainController implements EventHandler<MouseEvent> {
     {
         minefield.expose(9, 4);
         minefield.expose(9, 5);
-        for (int i = 9; i >= 0; i--)
+        for (int x = 9; x >= 0; x--)
         {
-            
+            for (int y = 0; y < 10; y++)
+            {
+
+            }
         }
 
         //minefield.mark(minefield.minefield[0][1]);
