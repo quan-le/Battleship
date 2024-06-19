@@ -267,15 +267,8 @@ public class MainController implements EventHandler<MouseEvent> {
     //- make the endgame()
     //- assign the timer to stop when endgame() is called
     //- make the UI better?
-    // Static method to update the mine left display
 
-    public static void updateMineLeftDisplay(int minesLeft) {
-        if (instance != null) {
-            Platform.runLater(() -> {
-                //instance.labelMineLeft.textProperty().set(numMinesLeft() + " Mines");
-            });
-        }
-    }
+
 
     void startTimer()
     {
