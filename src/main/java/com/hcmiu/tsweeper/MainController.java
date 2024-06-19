@@ -37,9 +37,6 @@ public class MainController implements EventHandler<MouseEvent> {
     private URL location;
 
     @FXML
-    private Button bt_Retry;
-
-    @FXML
     private Button bt_Start;
 
     @FXML
@@ -53,9 +50,6 @@ public class MainController implements EventHandler<MouseEvent> {
 
     @FXML
     private Pane pane_Main;
-
-    @FXML
-    public TextField textFieldMines;
 
     @FXML
     private Label labelMineLeft;
@@ -93,7 +87,6 @@ public class MainController implements EventHandler<MouseEvent> {
         System.out.println("Game Setup Begin ");
         //minefield = new Minefield();
         setTextFieldsandLabels();
-        textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
         System.out.println("Game Setup End ");
         //startGame();
     }
@@ -101,7 +94,7 @@ public class MainController implements EventHandler<MouseEvent> {
     public void startGame()
     {
         System.out.println("begin 'startGame' ");
-        textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
+        labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
         //pane_Main.getChildren().clear();
         minefield.makeMinefield();
         Pane pane_Main = new Pane();
@@ -142,8 +135,8 @@ public class MainController implements EventHandler<MouseEvent> {
         //textFieldTimer.setText("time");
         labelTime = new Label();
         labelTime.setText("Time");
-        textFieldMines = new TextField();
-        textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
+        //labelMineLeft = new Label();
+        labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
         labelMines = new Label();
         labelMines.setText("MinesLeft");
         generateCBBoxOption();
@@ -166,6 +159,7 @@ public class MainController implements EventHandler<MouseEvent> {
     @FXML
     int numMinesLeft() {
         labelMines.textProperty().set("Mines Left" + minefield.numMinesLeft);
+        labelMineLeft.textProperty().set("Mines Left" + minefield.numMinesLeft);
         return minefield.numMinesLeft;
     }
 
@@ -217,7 +211,8 @@ public class MainController implements EventHandler<MouseEvent> {
                     if (event.getButton() == MouseButton.SECONDARY) { // mouse have 2
                         minefield.mark(minefield.minefield[finalX][finalY]);
                         // Update the mine left display
-                        textFieldMines.setText(String.valueOf(minefield.numMinesLeft));
+                        labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
+
                     }
                     if (event.getButton() == MouseButton.PRIMARY) { // primary button click
                         minefield.expose(finalX, finalY);
@@ -234,7 +229,8 @@ public class MainController implements EventHandler<MouseEvent> {
         }
         if (!endGame) {
             System.out.println("Mines Left: " + minefield.getNumMinesLeft());
-            textFieldMines.textProperty().set(String.valueOf(minefield.numMinesLeft));
+            labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
+
 
         }
         if (minefield.exploded) {
@@ -276,7 +272,7 @@ public class MainController implements EventHandler<MouseEvent> {
     public static void updateMineLeftDisplay(int minesLeft) {
         if (instance != null) {
             Platform.runLater(() -> {
-                instance.textFieldMines.setText(String.valueOf(minesLeft));
+                //instance.labelMineLeft.textProperty().set(numMinesLeft() + " Mines");
             });
         }
     }
@@ -293,8 +289,10 @@ public class MainController implements EventHandler<MouseEvent> {
     }
     public void QLBot()
     {
-        minefield.expose(0,0);
-        minefield.mark(minefield.minefield[0][1]);
+        minefield.expose(9,4);
+        minefield.expose(9,5);
+
+        //minefield.mark(minefield.minefield[0][1]);
     }
 
 }
