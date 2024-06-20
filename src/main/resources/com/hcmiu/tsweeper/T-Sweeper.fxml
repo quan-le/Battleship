@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="545.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hcmiu.tsweeper.MainController">
    <children>
-      <AnchorPane fx:id="winPane" layoutX="139.0" layoutY="141.0" prefHeight="255.0" prefWidth="496.0">
+      <AnchorPane fx:id="winPane" layoutX="139.0" layoutY="141.0" prefHeight="398.0" prefWidth="635.0">
          <children>
             <ImageView fx:id="winMenu" fitHeight="545.0" fitWidth="773.0" layoutX="-139.0" layoutY="-142.0" pickOnBounds="true" preserveRatio="true">
                <image>

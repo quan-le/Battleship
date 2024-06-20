@@ -9,7 +9,7 @@ public class Cell {
     boolean mined = false;                                  // For checking if cell has mine
     boolean exposed = false;                                // For checking if cell is showed
     int nearMines = 0;                                      // int: check # surrounding mines
-    float probability;
+    double probability;
 
     public Cell()
     {
@@ -20,7 +20,7 @@ public class Cell {
         mined = false;
         exposed = false;
         nearMines = 0;
-        probability = 0;
+        probability = 0.0;
     }
 
     public int getNearMines() {

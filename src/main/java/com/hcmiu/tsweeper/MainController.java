@@ -2,17 +2,10 @@ package com.hcmiu.tsweeper;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import javafx.application.Platform;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.beans.binding.Binding;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,13 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.scene.text.Text;
-import javafx.fxml.Initializable;
-import java.net.URL;
-import java.util.ResourceBundle;
-import static javafx.beans.binding.Binding.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.ImageView;
 
@@ -301,8 +289,12 @@ public class MainController implements EventHandler<MouseEvent> {
 
     public void QLBot()
     {
-        minefield.expose(9, 4);
-        minefield.expose(9, 5);
+        QLBot bot = new QLBot(minefield);
+        //bot.expose(9,5);
+        //bot.mark(9,4);
+        bot.QLAlgo();
+        bot.expose(0,5);
+
         for (int x = 9; x >= 0; x--)
         {
             for (int y = 0; y < 10; y++)
@@ -310,8 +302,6 @@ public class MainController implements EventHandler<MouseEvent> {
 
             }
         }
-
-        //minefield.mark(minefield.minefield[0][1]);
     }
 
 }

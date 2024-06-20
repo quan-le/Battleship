@@ -5,20 +5,35 @@ package com.hcmiu.tsweeper;
     Cell[][] minefield;
     int[][] matrix;
     //Constructor
-    public QLBot(Cell[][] minefield)
+    public QLBot(Minefield mf)
     {
-        this.minefield = minefield;
+        this.mf = mf;
+        minefield = mf.getMinefield();
+    }
+    public void expose(int x, int y)
+    {
+        mf.expose(x,y);
     }
     public void mark(int x, int y)
     {
-        minefield[x][y].flagged = true;
-        //minefield.expose(x,y)
+        mf.mark(mf.minefield[x][y]);
     }
     public void QLAlgo()
     {
         //some algo
+        expose(9,4);
+        mark(9,5);
     }
+    public void assignProbabilityToCell()
+    {
+        for(int x  = 0; x < 10; x++)
+        {
+            for(int y = 0; y < 10; y++)
+            {
 
+            }
+        }
+    }
     public static int[][] gaussElimination(int[][] matrix) {
         int n = matrix.length;
         for (int i = 0; i < n; i++) {
@@ -54,6 +69,6 @@ package com.hcmiu.tsweeper;
 
     public void main(String[] args)
     {
-        mark(0,0);
+        expose(0,0);
     }
 }

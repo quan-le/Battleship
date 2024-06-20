@@ -17,7 +17,7 @@ public class Minefield {
     int numMinesLeft   ;                                    // number mines left
     int cellsUncovered = 0;                                 // Number of cell clicked, = 0 at start
     boolean exploded;                                       // Keep track of losing the game
-    static Cell[][] minefield;                                     // DSA Array 2d
+    static Cell[][] minefield;                              // DSA Array 2d
     int totalCells=0;                                       // Keep track of number of cell created
     int exposedCells=0;                                     // Keep track of number of cell clicked/exposed
 
@@ -75,7 +75,7 @@ public class Minefield {
     }
 
     //return MineField Cell[][]
-    public static Cell[][] getMinefield()
+    public Cell[][] getMinefield()
     { return minefield; }
 
     // Return # of mine left
@@ -144,7 +144,6 @@ public class Minefield {
 
             if (cell.mined) {
                 numMinesLeft--;
-                updateMineLeftDisplay();
             }
         } else {
             cell.flagged = false;
@@ -152,17 +151,27 @@ public class Minefield {
 
             if (cell.mined) {
                 numMinesLeft++;
-                updateMineLeftDisplay();
             }
         }
         return cell.flagged;
     }
 
-    // Method to update the mine left display
-    void updateMineLeftDisplay() {
-
+    public int getSurroundedUnexposedCell(int x, int y)
+    {
+        int count = 0;
+        int[] dx = {-1,  0, 0, 1};                                  //XDirection
+        int[] dy = { 0, -1, 1, 0};                                  //YDirection, they go pair together (up, down, left, right)
+        for (int i = 0; i < 4; i++) {                               //iterate thru each neighbors cells
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (nx >= 0 && ny >= 0 && nx < minefieldWidth && ny < minefieldHeight && minefield[nx][ny].exposed) {
+                //expose(nx, ny);
+                count++;
+            }
+        }
+        System.out.println(String.valueOf(count));
+        return count;
     }
-
     // random() method returns a random number between 0.0 and 0.999. then multiply it by 10,
     // so upper limit becomes 0.0 to 9.95, when you add 1, it becomes 1.0 to 10.95, Truncates to 10
     void addMines() {
