@@ -19,7 +19,7 @@ package com.hcmiu.tsweeper;
         //some algo
     }
 
-    public static double[][] gaussElimination(double[][] matrix) {
+    public static int[][] gaussElimination(int[][] matrix) {
         int n = matrix.length;
         for (int i = 0; i < n; i++) {
             // Find the pivot row and swap
@@ -29,7 +29,7 @@ package com.hcmiu.tsweeper;
                     max = j;
                 }
             }
-            double[] temp = matrix[i];
+            int[] temp = matrix[i];
             matrix[i] = matrix[max];
             matrix[max] = temp;
 
@@ -37,11 +37,11 @@ package com.hcmiu.tsweeper;
             for (int j = i + 1; j < n; j++) {
                 matrix[i][j] /= matrix[i][i];
             }
-            matrix[i][i] = 1.0;
+            matrix[i][i] = 1;
 
             // Eliminate column entries below the pivot
             for (int j = i + 1; j < n; j++) {
-                double factor = matrix[j][i];
+                int factor = matrix[j][i];
                 for (int k = i; k < n + 1; k++) {
                     matrix[j][k] -= factor * matrix[i][k];
                 }
