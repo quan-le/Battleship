@@ -59,6 +59,9 @@ public class MainController implements EventHandler<MouseEvent> {
     @FXML
     private Text textWinMenu;
 
+    @FXML
+    private Text text_RecommendCell;
+
     private static MainController instance;
 
     public MainController() {
@@ -69,6 +72,7 @@ public class MainController implements EventHandler<MouseEvent> {
     Minefield minefield = new Minefield();      // minefield is the instance, ie... instance.function
     Boolean endGame = false;                    // When u click the mine
     Boolean success = false;                    // Total Exposed Cells = Total Cells - Cells with Mines
+    QLBot bot;
 
     // Time
     Timeline timeline;
@@ -92,6 +96,8 @@ public class MainController implements EventHandler<MouseEvent> {
         //startGame();
         winPane.setVisible(false);
         textWinMenu.setVisible(false);
+        text_RecommendCell.setVisible(false);
+
     }
 
     public void startGame()
@@ -114,15 +120,18 @@ public class MainController implements EventHandler<MouseEvent> {
         System.out.println(cb_BOX_botSelection.getValue());
         if(cb_BOX_botSelection.getValue() == "Bot Quan Le")
         {
-            QLBot();
+            bot = new QLBot(minefield);
+            text_RecommendCell.setVisible(true);
+            QuanLeBot();
+
         }
         if(cb_BOX_botSelection.getValue() == "Bot Anh Dung")
         {
-            QLBot();
+            QuanLeBot();
         }
         if(cb_BOX_botSelection.getValue() == "Bot Dinh Quang")
         {
-            QLBot();
+            QuanLeBot();
         }
 
     }
@@ -215,10 +224,15 @@ public class MainController implements EventHandler<MouseEvent> {
                         minefield.mark(minefield.minefield[finalX][finalY]);
                         // Update the mine left display
                         labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
+                        bot.QLAlgo();
+                        bot.updateProbability();
 
                     }
                     if (event.getButton() == MouseButton.PRIMARY) { // primary button click
                         minefield.expose(finalX, finalY);
+                        bot.QLAlgo();
+                        bot.updateProbability();
+
                     }
                     cellClicked();
                 });
@@ -233,6 +247,7 @@ public class MainController implements EventHandler<MouseEvent> {
         if (!endGame) {
             System.out.println("Mines Left: " + minefield.getNumMinesLeft());
             labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
+            QuanLeBot();
 
         }
         if (minefield.exploded) {
@@ -287,21 +302,15 @@ public class MainController implements EventHandler<MouseEvent> {
         }
     }
 
-    public void QLBot()
+    public void QuanLeBot()
     {
-        QLBot bot = new QLBot(minefield);
         //bot.expose(9,5);
         //bot.mark(9,4);
         bot.QLAlgo();
         bot.expose(0,5);
+        String recommend = bot.smallestProbability();
+        text_RecommendCell.textProperty().set(recommend);
 
-        for (int x = 9; x >= 0; x--)
-        {
-            for (int y = 0; y < 10; y++)
-            {
-
-            }
-        }
     }
 
 }

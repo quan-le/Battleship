@@ -20,10 +20,14 @@ public class Cell {
         mined = false;
         exposed = false;
         nearMines = 0;
-        probability = 0.0;
+        probability = -1;
     }
 
     public int getNearMines() {
         return nearMines;
     }
+    public int getX()
+    {return this.x;}
+    public int getY()
+    {return this.y;}
 }

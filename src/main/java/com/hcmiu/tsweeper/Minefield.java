@@ -141,6 +141,7 @@ public class Minefield {
         if (!cell.flagged && numMinesLeft > 0) {
             cell.flagged = true;
             cell.button.setText("\uD83D\uDC80");
+            cell.button.setStyle("-fx-border-color: Black ");
 
             if (cell.mined) {
                 numMinesLeft--;
@@ -159,18 +160,36 @@ public class Minefield {
     public int getSurroundedUnexposedCell(int x, int y)
     {
         int count = 0;
-        int[] dx = {-1,  0, 0, 1};                                  //XDirection
-        int[] dy = { 0, -1, 1, 0};                                  //YDirection, they go pair together (up, down, left, right)
-        for (int i = 0; i < 4; i++) {                               //iterate thru each neighbors cells
+        int[] dx = {-1,  0, 0, 1, 1, -1, 1, -1};                                    //XDirection
+        int[] dy = { 0, -1, 1, 0, 1, -1, -1, 1};                                    //YDirection, they go pair together (up, down, left, right)
+        for (int i = 0; i < 8; i++) {                                               //iterate thru each neighbors cells
             int nx = x + dx[i];
             int ny = y + dy[i];
             if (nx >= 0 && ny >= 0 && nx < minefieldWidth && ny < minefieldHeight && minefield[nx][ny].exposed) {
-                //expose(nx, ny);
-                count++;
+                if(neighborsMined(x,y) != 0)
+                {
+                    count += neighborsMined(nx,ny);
+                }
             }
         }
         System.out.println(String.valueOf(count));
         return count;
+    }
+    public double getSmallestProbability()
+    {
+        double smallestPossibility = 1000000000;
+        for (int x = 0; x < 10; x++)
+        {
+            for(int y = 0; y < 10; y++)
+            {
+                if (minefield[x][y].button.getText() != "\uD83D\uDC80") {
+                    if (minefield[x][y].probability < smallestPossibility && minefield[x][y].probability > 0) {
+                        smallestPossibility = minefield[x][y].probability;
+                    }
+                }
+            }
+        }
+        return smallestPossibility;
     }
     // random() method returns a random number between 0.0 and 0.999. then multiply it by 10,
     // so upper limit becomes 0.0 to 9.95, when you add 1, it becomes 1.0 to 10.95, Truncates to 10
@@ -185,7 +204,6 @@ public class Minefield {
             }
         }
     }
-
 
     public int getNumMinesLeft()
     { return numMinesLeft; }                                        // total cells at start = difficulty level
