@@ -1,12 +1,12 @@
 package com.hcmiu.tsweeper;
 import java.util.*;
 
-public class QLBot {
+public class qlbot1 {
     Minefield mf;
     Cell[][] minefield;
     int[][] matrix;
     //Constructor
-    public QLBot(Minefield mf)
+    public qlbot1(Minefield mf)
     {
         this.mf = mf;
         minefield = mf.getMinefield();

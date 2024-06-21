@@ -1,0 +1,10 @@
+diff a/src/main/java/com/hcmiu/tsweeper/QLBot.java b/src/main/java/com/hcmiu/tsweeper/QLBot.java	(rejected hunks)
+@@ -1,6 +1,7 @@
+ package com.hcmiu.tsweeper;
++import java.util.*;
+ 
+-    public class QLBot {
++public class QLBot {
+     Minefield mf;
+     Cell[][] minefield;
+     int[][] matrix;

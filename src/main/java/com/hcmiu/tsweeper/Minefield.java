@@ -155,7 +155,22 @@ public class Minefield {
         }
         return cell.flagged;
     }
-
+    public double getSmallestProbability()
+    {
+        double smallestPossibility = 1000000000;
+        for (int x = 0; x < 10; x++)
+        {
+            for(int y = 0; y < 10; y++)
+            {
+                if (minefield[x][y].button.getText() != "\uD83D\uDC80") {
+                    if (minefield[x][y].probability < smallestPossibility && minefield[x][y].probability > 0) {
+                        smallestPossibility = minefield[x][y].probability;
+                    }
+                }
+            }
+        }
+        return smallestPossibility;
+    }
     public int getSurroundedUnexposedCell(int x, int y)
     {
         int count = 0;

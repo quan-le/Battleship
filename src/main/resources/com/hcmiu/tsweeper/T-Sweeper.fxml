@@ -59,6 +59,11 @@
                   <Font name="System Bold Italic" size="39.0" />
                </font>
             </Text>
+            <Text fx:id="text_RecommendCell" layoutX="55.0" layoutY="507.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="183.9999755859376">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
       <Pane fx:id="pane_Main" layoutX="14.0" layoutY="31.0" onMouseClicked="#cellClicked" prefHeight="475.0" prefWidth="450.0" />
