@@ -62,123 +62,96 @@ public class MainController implements EventHandler<MouseEvent> {
     @FXML
     private Text text_RecommendCell;
 
-    private static MainController instance;
-
-    public MainController() {
-        instance = this;
-    }
-
-    //Passion will take notices of these
-    Minefield minefield = new Minefield();      // minefield is the instance, ie... instance.function
-    Boolean endGame = false;                    // When u click the mine
-    Boolean success = false;                    // Total Exposed Cells = Total Cells - Cells with Mines
+    // Instance variables for game management
+    Minefield minefield = new Minefield();
     QLBot bot;
+    ADBot botAd;
+    boolean endGame = false;
+    boolean success = false;
+    private boolean isQLbotActive;
 
     // Time
     Timeline timeline;
-    boolean started;                            // check game started?
-    int cellSize = 45;                           //
+    boolean started;
+    int cellSize = 45;
     int i = 0;
-    public String BotChosen;
 
     @Override
     public void handle(MouseEvent event) {
-
+        // Handle mouse events if needed
     }
 
     @FXML
     void initialize() {
-        instance = this;
-        System.out.println("Game Setup Begin ");
-        //minefield = new Minefield();
         setTextFieldsandLabels();
-        System.out.println("Game Setup End ");
-        //startGame();
+        generateCBBoxOption();
         winPane.setVisible(false);
         textWinMenu.setVisible(false);
         text_RecommendCell.setVisible(false);
-
     }
 
-    public void startGame()
-    {
-        System.out.println("begin 'startGame' ");
+    public void handleBotLogic(){
+        if(isQLbotActive && bot != null) {
+            bot.QLAlgo();
+            bot.updateProbability();
+        }
+    }
+
+    public void setQLbotActive(boolean isActive){
+        isQLbotActive = isActive;
+    }
+
+    public void startGame() {
         labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
-        //pane_Main.getChildren().clear();
         minefield.makeMinefield();
-        Pane pane_Main = new Pane();
         minefield.addMines();
 
         addMinefieldButtons();
-        minefield.printMinefield();
         started = false;
         setTextFieldsandLabels();
-        System.out.println("end 'startGame' ");
         StartButton();
 
-        //chosing bot
-        System.out.println(cb_BOX_botSelection.getValue());
-        if(cb_BOX_botSelection.getValue() == "Bot Quan Le")
-        {
+        String selectedBot = cb_BOX_botSelection.getValue();
+        if ("Bot Quan Le".equals(selectedBot)) {
             bot = new QLBot(minefield);
+            botAd = null;
+            setQLbotActive(true);
             text_RecommendCell.setVisible(true);
             QuanLeBot();
-
-        }
-        if(cb_BOX_botSelection.getValue() == "Bot Anh Dung")
-        {
+        } else if ("Bot Anh Dung".equals(selectedBot)) {
+            bot = null;
+            botAd = new ADBot(minefield);
+            setQLbotActive(false);
             ADBot();
-        }
-        if(cb_BOX_botSelection.getValue() == "Bot Dinh Quang")
-        {
-            QuanLeBot();
-        }
-
-    }
-
-    //@Override
-    public void handle(ActionEvent event) {
-        if (event.getSource() == bt_Start) {
-            System.out.println("Reset Button: ");
+        } else if ("Bot Dinh Quang".equals(selectedBot)) {
+            // Handle Bot Dinh Quang logic here
+        }else{
+            bot = null;
+            botAd = null;
+            setQLbotActive(false);
         }
     }
 
     void setTextFieldsandLabels() {
-        //textFieldTimer.setText("time");
-        labelTime = new Label();
         labelTime.setText("Time");
-        //labelMineLeft = new Label();
         labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
-        labelMines = new Label();
-        labelMines.setText("MinesLeft");
-        generateCBBoxOption();
+        labelMines.setText("Mines Left");
     }
-    public void generateCBBoxOption()
-    {
-        //ComboBox<String> cb_BOX_botSelection = new ComboBox<>();
-        cb_BOX_botSelection.getItems().add("Bot Quan Le");
-        cb_BOX_botSelection.getItems().add("Bot Anh Dung");
-        cb_BOX_botSelection.getItems().add("Bot Dinh Quang");
-        cb_BOX_botSelection.getItems().add("Manual Game");
-        //return cb_BOX_botSelection.getValue();
+
+    public void generateCBBoxOption() {
+        cb_BOX_botSelection.getItems().addAll("Bot Quan Le", "Bot Anh Dung", "Bot Dinh Quang", "Manual Game");
     }
+
     @FXML
-    public String getCBBoxOption()
-    {
-        BotChosen = cb_BOX_botSelection.getValue();
+    public String getCBBoxOption() {
         return cb_BOX_botSelection.getValue();
     }
+
     @FXML
     int numMinesLeft() {
         labelMines.textProperty().set("Mines Left" + minefield.numMinesLeft);
         labelMineLeft.textProperty().set("Mines Left" + minefield.numMinesLeft);
         return minefield.numMinesLeft;
-    }
-
-    int surroundMine(int x, int y)
-    {
-        int surroundMine = minefield.neighborsMined(x,y);
-        return surroundMine;
     }
 
     void StartButton() {
@@ -203,36 +176,29 @@ public class MainController implements EventHandler<MouseEvent> {
         // if (mouse.button == clicked )
     }
 
-    //**************************************
-    public void addMinefieldButtons() {
+    void addMinefieldButtons() {
         pane_Main.getChildren().clear();
         for (int x = 0; x < minefield.minefieldWidth; x++) {
             for (int y = 0; y < minefield.minefieldHeight; y++) {
                 Button button = new Button();
-                button.setLayoutX(x * cellSize);                    //Passion
+                button.setLayoutX(x * cellSize);
                 button.setLayoutY(y * cellSize);
                 button.setPrefSize(cellSize, cellSize);
                 button.setStyle("-fx-background-insets: 0,1,2");
-                //Adding minefield button into pane
+
                 pane_Main.getChildren().add(button);
                 minefield.addButtonToCell(x, y, button);
 
                 int finalX = x;
                 int finalY = y;
                 button.setOnMouseClicked(event -> {
-                    if (event.getButton() == MouseButton.SECONDARY) { // mouse have 2
+                    if (event.getButton() == MouseButton.SECONDARY) {
                         minefield.mark(minefield.minefield[finalX][finalY]);
-                        // Update the mine left display
-                            labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
-                            bot.QLAlgo();
-                            bot.updateProbability();
-
-                    }
-                    if (event.getButton() == MouseButton.PRIMARY) { // primary button click
+                        labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
+                        handleBotLogic();
+                    } else if (event.getButton() == MouseButton.PRIMARY) {
                         minefield.expose(finalX, finalY);
-                        bot.QLAlgo();
-                        bot.updateProbability();
-                        ADBot();
+                        handleBotLogic();
                     }
                     cellClicked();
                 });
@@ -245,10 +211,7 @@ public class MainController implements EventHandler<MouseEvent> {
             started = true;
         }
         if (!endGame) {
-            System.out.println("Mines Left: " + minefield.getNumMinesLeft());
             labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
-            //QuanLeBot();
-
         }
         if (minefield.exploded) {
             endGame = true;
@@ -262,20 +225,17 @@ public class MainController implements EventHandler<MouseEvent> {
         }
     }
 
-    private void stop() {                 // set pause button 1) if pressed 2) if mine triggered
-        Button pause = new Button();      //timer stop when stop() is called using timeline.stop()
+    private void stop() {
         for (int x = 0; x < minefield.minefieldWidth; x++) {
             for (int y = 0; y < minefield.minefieldHeight; y++) {
                 Button button = minefield.minefield[x][y].button;
-                //endgame condition
-                if (minefield.exploded || minefield.minefield[x][y].mined) {  //mine exploded (lose)
-                    // Change this to only happen on specified button, all others expose or SHOW
+                if (minefield.exploded || minefield.minefield[x][y].mined) {
                     button.setText("!");
-                    stopTimer();// show remaining mines
+                    stopTimer();
                     winPane.setVisible(true);
                     leftPane.setVisible(false);
                     pane_Main.setVisible(false);
-                } else if(minefield.numMinesLeft == 0) {
+                } else if (minefield.numMinesLeft == 0) {
                     stopTimer();
                     textWinMenu.setVisible(true);
                     winPane.setVisible(false);
@@ -287,7 +247,6 @@ public class MainController implements EventHandler<MouseEvent> {
     }
 
     void startTimer() {
-        textTimeLeft.setText(String.valueOf(i));
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             i++;
             textTimeLeft.setText(String.valueOf(i));
@@ -302,36 +261,25 @@ public class MainController implements EventHandler<MouseEvent> {
         }
     }
 
-    public void QuanLeBot()
-    {
-        //bot.expose(9,5);
-        //bot.mark(9,4);
+    public void QuanLeBot() {
         bot.QLAlgo();
-        bot.expose(0,5);
+        bot.expose(0, 5);
         String recommend = bot.smallestProbability();
         text_RecommendCell.textProperty().set(recommend);
-
     }
 
-    public void ADBot()
-    {
-        ADBot bot = new ADBot(minefield);
+    public void ADBot() {
+        botAd.ADAlgo();
+        botAd.expose(0, 5);
+    }
 
-        bot.ADAlgo();
-        bot.expose(0,5);
-
-        for (int x = 9; x >= 0; x--)
-        {
-            for (int y = 0; y < 10; y++)
-            {
-
-
-            }
+    public void handle(ActionEvent event) {
+        if (event.getSource() == bt_Start) {
+            System.out.println("Reset Button: ");
         }
     }
-
-
 }
+
 
 
 

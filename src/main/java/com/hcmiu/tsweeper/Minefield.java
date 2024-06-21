@@ -209,6 +209,27 @@ public class Minefield {
     {
         minefield[x][y].button = bt;
     }
+
+    public boolean isGameWon() {
+        for (int x = 0; x < minefieldWidth; x++) {
+            for (int y = 0; y < minefieldHeight; y++) {
+                Cell cell = minefield[x][y];
+                if (!cell.isMined() && !cell.isExposed()) {
+                    return false;
+                }
+                if (cell.isMined() && !cell.isMined()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isGameLost() {
+        return exploded;
+    }
+
+
 }
 
 
