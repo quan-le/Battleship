@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="545.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hcmiu.tsweeper.MainController">
    <children>
-      <AnchorPane fx:id="winPane" layoutX="139.0" layoutY="141.0" prefHeight="398.0" prefWidth="635.0">
+      <AnchorPane fx:id="winPane" layoutX="139.0" layoutY="141.0" prefHeight="398.0" prefWidth="635.0" visible="false">
          <children>
             <ImageView fx:id="winMenu" fitHeight="545.0" fitWidth="773.0" layoutX="-139.0" layoutY="-142.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -59,11 +59,11 @@
                   <Font name="System Bold Italic" size="39.0" />
                </font>
             </Text>
-            <Text fx:id="text_RecommendCell" layoutX="55.0" layoutY="507.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="183.9999755859376">
+            <Label fx:id="text_RecommendCell" layoutX="67.0" layoutY="498.0" prefHeight="19.0" prefWidth="178.0" text="Recommend Mine Cell" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font size="15.0" />
+                  <Font name="System Bold" size="13.0" />
                </font>
-            </Text>
+            </Label>
          </children>
       </AnchorPane>
       <Pane fx:id="pane_Main" layoutX="14.0" layoutY="31.0" onMouseClicked="#cellClicked" prefHeight="475.0" prefWidth="450.0" />
