@@ -118,11 +118,11 @@ public class MainController implements EventHandler<MouseEvent> {
         }
         if(cb_BOX_botSelection.getValue() == "Bot Anh Dung")
         {
-            QLBot();
+            ADBot();
         }
         if(cb_BOX_botSelection.getValue() == "Bot Dinh Quang")
         {
-            QLBot();
+
         }
 
     }
@@ -290,8 +290,7 @@ public class MainController implements EventHandler<MouseEvent> {
     public void QLBot()
     {
         QLBot bot = new QLBot(minefield);
-        //bot.expose(9,5);
-        //bot.mark(9,4);
+
         bot.QLAlgo();
         bot.expose(0,5);
 
@@ -300,9 +299,28 @@ public class MainController implements EventHandler<MouseEvent> {
             for (int y = 0; y < 10; y++)
             {
 
+
             }
         }
     }
+
+    public void ADBot()
+    {
+        ADBot bot = new ADBot(minefield);
+
+        bot.ADAlgo();
+        bot.expose(0,5);
+
+        for (int x = 9; x >= 0; x--)
+        {
+            for (int y = 0; y < 10; y++)
+            {
+
+
+            }
+        }
+    }
+
 
 }
 

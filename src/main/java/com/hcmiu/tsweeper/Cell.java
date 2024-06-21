@@ -23,7 +23,69 @@ public class Cell {
         probability = 0.0;
     }
 
+
+    public Cell(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public int getNearMines() {
         return nearMines;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Button getButton() {
+        return button;
+    }
+
+    public void setButton(Button button) {
+        this.button = button;
+    }
+
+    public boolean isFlagged() {
+        return flagged;
+    }
+
+    public void setFlagged(boolean flagged) {
+        this.flagged = flagged;
+    }
+
+    public boolean isMined() {
+        return mined;
+    }
+
+    public void setMined(boolean mined) {
+        this.mined = mined;
+    }
+
+    public boolean isExposed() {
+        return exposed;
+    }
+
+    public void setExposed(boolean exposed) {
+        this.exposed = exposed;
+    }
+
+    public double getProbability() {
+        return probability;
+    }
+
+    public void setProbability(double probability) {
+        this.probability = probability;
     }
 }
