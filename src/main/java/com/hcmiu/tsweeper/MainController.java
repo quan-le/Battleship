@@ -247,7 +247,7 @@ public class MainController implements EventHandler<MouseEvent> {
     }
 
     void startTimer() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+        timeline = new Timeline(new KeyFrame(Duration.millis(1.0), e -> {
             i++;
             textTimeLeft.setText(String.valueOf(i));
         }));
