@@ -223,16 +223,16 @@ public class MainController implements EventHandler<MouseEvent> {
                     if (event.getButton() == MouseButton.SECONDARY) { // mouse have 2
                         minefield.mark(minefield.minefield[finalX][finalY]);
                         // Update the mine left display
-                        labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
-                        bot.QLAlgo();
-                        bot.updateProbability();
+                            labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
+                            bot.QLAlgo();
+                            bot.updateProbability();
 
                     }
                     if (event.getButton() == MouseButton.PRIMARY) { // primary button click
                         minefield.expose(finalX, finalY);
                         bot.QLAlgo();
                         bot.updateProbability();
-
+                        ADBot();
                     }
                     cellClicked();
                 });
@@ -247,7 +247,7 @@ public class MainController implements EventHandler<MouseEvent> {
         if (!endGame) {
             System.out.println("Mines Left: " + minefield.getNumMinesLeft());
             labelMineLeft.textProperty().set(minefield.numMinesLeft + " Mines");
-            QuanLeBot();
+            //QuanLeBot();
 
         }
         if (minefield.exploded) {
