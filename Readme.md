@@ -37,6 +37,9 @@ This project aims to clone a popular MineSweeper game with the implementation of
 
 ![Screenshot 2024-06-26 154139](https://github.com/quan-le/T-Sweeper/assets/31929073/2707c208-fb38-4ac9-9bb1-65e76c978a75)
 
+- Bot Comparision:
+-        https://docs.google.com/spreadsheets/d/1Z8ZW0dSW2kuma6RFSTpe74xpPOHlmik0vsNyYiIP0jM/edit?gid=2018658276#gid=2018658276
+  
 -Extra Resouce
 - Presentation:
 -     https://docs.google.com/presentation/d/15w1SjGE82sbCp20MyQAU9_9z8ZPGybVFqOLhSL3i2C8/edit#slide=id.g2e74ae65dd9_1_37
