@@ -12,7 +12,6 @@ This project aims to clone a popular MineSweeper game with the implementation of
 ## Technologies Used
 - JavaFX
 - SceneBuilder
-- MYSQL
 
 ## Requirements for Installing
 - Java SDK 22
