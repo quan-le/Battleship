@@ -1,12 +1,15 @@
 
 ## Overview
-This project aims to clone a popular MineSweeper game with the implementation of bot to aid user, giving them a better experience when playing this game
+T-Sweeper is a project inspired by the popular MineSweeper game with the additional implementation of additional algorithms to aid users, giving them a better and easier experience when playing this game
+
+## Motivation
+Believe it or not, Mine Sweeper is not the easiest game in the world and any children or adults can easily win for the majority of the game. It combines statistics and quick thinking skills as well as luck to be able to come up with the safest place that do not contain mine to pick each time. We believe that the process of statistics and reaction time can be compensated with the aid of programming and players will now just have to rely on their luck at the very decisive moment. 
 
 ## Features
-- GUI for game play
+- GUI for gameplay
 - Different Bots, AIs for choosing
 - Highlighting Cell
-- Text show the number of mine left
+- Text shows the number of mine left
 - Timer
 
 ## Technologies Used
